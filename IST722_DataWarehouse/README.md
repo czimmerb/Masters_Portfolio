@@ -15,7 +15,7 @@ The course introduces students to concepts of business intelligence and the prac
 2. [Group Project Final](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%20Project%20Final.pdf)
     - Project instructions
     
-3. [Group 1 Milestone Project charter](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20Milestone%201_project_charter.docx)
+3. [Group 1 Milestone Project charter](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20Milestone%20Project%20Charter.docx)
     - Project milestone 1 - Project charter
     
 4. [Group 1 High Level.xlsx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20High%20Level%206-1-20.xlsx)
