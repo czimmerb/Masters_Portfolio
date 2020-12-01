@@ -5,8 +5,6 @@
 ### School Email: czimmerb@syr.edu
 ### Personal Email: czimmer18@gmail.com
 
-## Description
-
 ## Table of Contents
 1. README.md
     - Overview document detailing repository contents
