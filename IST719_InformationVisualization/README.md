@@ -20,10 +20,10 @@ A broad introduction to data visualization for information professionals. Studen
 4. [Work in Progress](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/Courtney%20Zimmer_WIP.pdf)
     - Work in progress submission and poster mockup
     
-5. [Courtney Zimmer_FinalPoster.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
+5. [Courtney Zimmer_FinalPoster.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/Courtney%20Zimmer_FinalPoster.Rmd)
     - R Markdown script submission
     
-6. [Courtney Zimmer_FinalPoster.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pdf)
+6. [Courtney Zimmer_FinalPoster.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/Courtney%20Zimmer_FinalPoster.html)
     - R script HTML file
     
 7. [IST 687 Final Project.pptx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pptx)
