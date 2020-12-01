@@ -29,3 +29,4 @@ The course introduces students to concepts of business intelligence and the prac
     
 7. [IST 722 Group 1 Project Presentation.pptx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/IST722%20Group1%20project%20presentation.pptx)
     - Project presentation deck
+    
