@@ -32,5 +32,5 @@ or visualization. The final project consist of demonstrating your ability to wri
 6. [Courtney Zimmer_Final Project.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST652_ScriptingDataAnalysis/Courtney%20Zimmer_Final%20Project.pdf)
     - Python script pdf
     
-7. [Courtney Zimmer_Final Project.docx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pptx)
+7. [Courtney Zimmer_Final Project.docx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST652_ScriptingDataAnalysis/Courtney%20Zimmer_Final%20Project.docx)
     - Project report
