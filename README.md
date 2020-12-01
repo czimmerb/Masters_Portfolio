@@ -10,13 +10,13 @@
 ## Table of Contents
 1. README.md
     - Overview document detailing repository contents
-2. [IST 687 – Introduction to Data Science](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_IntroDataScience)
+2. [IST 652 - Scripting for Data Analysis](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST652_ScriptingDataAnalysis)
 
-3. [IST 722 - Data Warehouse](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST722_DataWarehouse)
+3. [IST 687 – Introduction to Data Science](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_IntroDataScience)
 
 4. [IST 719 - Information Visualization](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST719_InformationVisualization)
 
-5. [IST 652 - Scripting for Data Analysis](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST652_ScriptingDataAnalysis)
+5. [IST 722 - Data Warehouse](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST722_DataWarehouse)
 
 6. Resume
 
