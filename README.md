@@ -10,7 +10,7 @@
 ## Table of Contents
 1. README.md
     - Overview document detailing repository contents
-2. IST 687 – Introduction to Data Science
+2. [IST 687 – Introduction to Data Science](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_IntroDataScience)
 
 3. IST 722 - Data Warehouse
 
