@@ -12,7 +12,7 @@
     - Overview document detailing repository contents
 2. [IST 687 – Introduction to Data Science](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_IntroDataScience)
 
-3. IST 722 - Data Warehouse
+3. [IST 722 - Data Warehouse](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST722_DataWarehouse)
 
 4. IST 719 - Information Visualization
 
