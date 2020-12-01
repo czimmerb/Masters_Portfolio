@@ -18,7 +18,7 @@ The course introduces students to concepts of business intelligence and the prac
 3. [Group 1 Milestone Project charter](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20Milestone%20Project%20Charter.docx)
     - Project milestone 1 - Project charter
     
-4. [Group 1 High Level.xlsx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20High%20Level%206-1-20.xlsx)
+4. [Group 1 High Level.xlsx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20High%20Level.xlsx)
     - High-level dimensional modeling worksheet
     
 5. [Group 1 Detail Worksheet.xlsm](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201_Detail_Worksheet.xlsm)
