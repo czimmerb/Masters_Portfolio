@@ -16,15 +16,15 @@ or visualization. The final project consist of demonstrating your ability to wri
 1. README.md
     - Overview document detailing repository contents
     
-2. [Final Project](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Data)
+2. [Final Project](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST652_ScriptingDataAnalysis/Final%20Project.pdf)
     - Project Instructions
     
 3. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST652_ScriptingDataAnalysis/Data)
     - Airbnb csv (NY_MM-YYYY.csv)
     - Streeteasy csv (rentalInventory_All.csv
     
-4. [IST 687 Final Project.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
-    - R Markdown script submission
+4. [Final Project Proposal_czimmerb](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
+    - Initial project proposal
     
 5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
     - R script submission html file
