@@ -23,7 +23,7 @@ experience. The final project consist of working in a team to select a dataset, 
 4. [IST 687 Final Project.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_IntroDataScience/IST%20687%20Final%20Project.Rmd)
     - R Markdown script submission
     
-5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
+5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_IntroDataScience/IST_687_Final_Project.html)
     - R script submission html file
     
 6. [IST 687 Final Project.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pdf)
