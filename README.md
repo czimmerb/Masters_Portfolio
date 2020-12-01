@@ -18,6 +18,6 @@
 
 5. [IST 722 - Data Warehouse](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST722_DataWarehouse)
 
-6. Resume
+6. [Resume](https://github.com/czimmerb/Masters_Portfolio/blob/main/CourtneyZimmer_Resume.pdf)
 
 7. Portfolio Submission
