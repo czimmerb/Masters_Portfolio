@@ -11,7 +11,7 @@
     
 2. [IST 687 – Introduction to Data Science](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_IntroDataScience)
 
-3. [IST 707 - Data Analytics](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST652_ScriptingDataAnalysis)
+3. [IST 707 - Data Analytics](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST707_DataAnalytics)
 
 4. [IST 719 - Information Visualization](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST719_InformationVisualization)
 
