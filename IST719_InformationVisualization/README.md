@@ -11,8 +11,8 @@ A broad introduction to data visualization for information professionals. Studen
 1. README.md
     - Overview document detailing repository contents
     
-2. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Data)
-    - Both datasets used in the project
+2. [Final Poster Project](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Data)
+    - Project instructions
     
 3. [Project_Updates](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Project_Updates)
     - Agile Kanban board & project summary for all 3 project updates
