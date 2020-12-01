@@ -26,8 +26,8 @@ experience. The final project consist of working in a team to select a dataset, 
 5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_IntroDataScience/IST_687_Final_Project.html)
     - R script submission html file
     
-6. [IST 687 Final Project.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pdf)
+6. [IST 687 Final Project Report.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_IntroDataScience/IST%20687%20Final%20Project%20Report.pdf)
     - Project report
     
-7. [IST 687 Final Project.pptx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pptx)
+7. [IST 687 Final Project.pptx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_IntroDataScience/IST%20687%20Final%20Project.pptx)
     - Project presentation deck
