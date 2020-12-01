@@ -14,7 +14,7 @@ experience. The final project consist of working in a team to select a dataset, 
 1. README.md
     - Overview document detailing repository contents
     
-2. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Data)
+2. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_IntroDataScience/Data)
     - Both datasets used in the project
     
 3. [Project_Updates](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Project_Updates)
