@@ -21,7 +21,7 @@ The course introduces students to concepts of business intelligence and the prac
 4. [Group 1 High Level.xlsx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20High%20Level.xlsx)
     - High-level dimensional modeling worksheet
     
-5. [Group 1 Detail Worksheet.xlsm](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201_Detail_Worksheet.xlsm)
+5. [Group 1 Detail Worksheet.xlsm](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Group%201%20Detail%20Worksheet.xlsm)
     - Detail-level dimensional modeling worksheet
     
 6. [Customer Review Group1.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST722_DataWarehouse/Customer%20Review_Group1.pdf)
