@@ -26,5 +26,8 @@ A broad introduction to data visualization for information professionals. Studen
 6. [Courtney Zimmer_FinalPoster.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/Courtney%20Zimmer_FinalPoster.html)
     - R script HTML file
     
-7. [IST 687 Final Project.pptx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pptx)
-    - Project presentation deck
+7. [CourtneyZimmer_FinalPoster.ai](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/CourtneyZimmer_FinalPoster.ai)
+    - Project poster Adobe Illustrator file
+    
+8. [CourtneyZimmer_FinalPoster.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/CourtneyZimmer_FinalPoster.pdf)
+    - Project poster PDF final submission
