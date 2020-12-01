@@ -17,14 +17,14 @@ A broad introduction to data visualization for information professionals. Studen
 3. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST719_InformationVisualization/Data)
     - Data folder contains the 4 csv data files. Each csv is a year of weekly avocado sale data collected from the Hass Avocado Board website. 
     
-4. [Work in Progress](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
+4. [Work in Progress](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/Courtney%20Zimmer_WIP.pdf)
     - Work in progress submission and poster mockup
     
-5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
-    - R script submission html file
+5. [Courtney Zimmer_FinalPoster.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
+    - R Markdown script submission
     
-6. [IST 687 Final Project.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pdf)
-    - Project report
+6. [Courtney Zimmer_FinalPoster.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pdf)
+    - R script HTML file
     
 7. [IST 687 Final Project.pptx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pptx)
     - Project presentation deck
