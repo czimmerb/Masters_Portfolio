@@ -16,7 +16,7 @@
 
 4. [IST 719 - Information Visualization](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST719_InformationVisualization)
 
-5. IST 652 - Scripting for Data Analysis
+5. [IST 652 - Scripting for Data Analysis](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST652_ScriptingDataAnalysis)
 
 6. Resume
 
