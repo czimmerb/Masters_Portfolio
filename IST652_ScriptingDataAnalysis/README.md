@@ -23,14 +23,14 @@ or visualization. The final project consist of demonstrating your ability to wri
     - Airbnb csv (NY_MM-YYYY.csv)
     - Streeteasy csv (rentalInventory_All.csv
     
-4. [Final Project Proposal_czimmerb](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST652_ScriptingDataAnalysis/Final%20Project%20Proposal_czimmerb.docx)
+4. [Final Project Proposal_czimmerb.docx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST652_ScriptingDataAnalysis/Final%20Project%20Proposal_czimmerb.docx)
     - Initial project proposal
     
-5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
-    - R script submission html file
+5. [Courtney Zimmer_Final Project.ipynb](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
+    - Python script
     
-6. [IST 687 Final Project.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pdf)
+6. [Courtney Zimmer_Final Project.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pdf)
+    - Python script pdf
+    
+7. [Courtney Zimmer_Final Project.docx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pptx)
     - Project report
-    
-7. [IST 687 Final Project.pptx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.pptx)
-    - Project presentation deck
