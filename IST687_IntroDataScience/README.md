@@ -20,7 +20,7 @@ experience. The final project consist of working in a team to select a dataset, 
 3. [Project_Updates](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_IntroDataScience/Project_Updates)
     - Agile Kanban board & project summary for all 3 project updates
     
-4. [IST 687 Final Project.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
+4. [IST 687 Final Project.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_IntroDataScience/IST%20687%20Final%20Project.Rmd)
     - R Markdown script submission
     
 5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
