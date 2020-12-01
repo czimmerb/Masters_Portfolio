@@ -26,5 +26,5 @@ field. Hands-on experience with open-source software packages. The final project
 5. [IST707FINALTeampresentation.pptx](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST707_DataAnalytics/IST707FINALTeampresentation.pptx)
     - Final project powerpoint presentation
     
-6. [SVM Output for project.docx](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST707_DataAnalytics/SVM Output for project.docx)
+6. [SVM Output for project.docx](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST707_DataAnalytics/SVM%20Output%20for%20project.docx)
     - Output of the SVM - code was commented out in Rmd file as it took a significant amount of time to run
