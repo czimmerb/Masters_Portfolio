@@ -14,7 +14,7 @@
 
 3. [IST 722 - Data Warehouse](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST722_DataWarehouse)
 
-4. IST 719 - Information Visualization
+4. [IST 719 - Information Visualization] (https://github.com/czimmerb/Masters_Portfolio/tree/main/IST719_InformationVisualization)
 
 5. IST 652 - Scripting for Data Analysis
 
