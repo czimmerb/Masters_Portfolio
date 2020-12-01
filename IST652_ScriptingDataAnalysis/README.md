@@ -23,7 +23,7 @@ or visualization. The final project consist of demonstrating your ability to wri
     - Airbnb csv (NY_MM-YYYY.csv)
     - Streeteasy csv (rentalInventory_All.csv
     
-4. [Final Project Proposal_czimmerb](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
+4. [Final Project Proposal_czimmerb](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST652_ScriptingDataAnalysis/Final%20Project%20Proposal_czimmerb.docx)
     - Initial project proposal
     
 5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
