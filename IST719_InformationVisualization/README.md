@@ -17,8 +17,8 @@ A broad introduction to data visualization for information professionals. Studen
 3. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST719_InformationVisualization/Data)
     - Data folder contains the 4 csv data files. Each csv is a year of weekly avocado sale data collected from the Hass Avocado Board website. 
     
-4. [IST 687 Final Project.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
-    - R Markdown script submission
+4. [Work in Progress](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
+    - Work in progress submission and poster mockup
     
 5. [IST_687_Final_Project.html](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST_687_Final_Project.html)
     - R script submission html file
