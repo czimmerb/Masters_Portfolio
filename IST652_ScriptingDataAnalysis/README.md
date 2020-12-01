@@ -19,7 +19,7 @@ or visualization. The final project consist of demonstrating your ability to wri
 2. [Final Project](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Data)
     - Project Instructions
     
-3. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Project_Updates)
+3. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST652_ScriptingDataAnalysis/Data)
     - Airbnb csv (NY_MM-YYYY.csv)
     - Streeteasy csv (rentalInventory_All.csv
     
