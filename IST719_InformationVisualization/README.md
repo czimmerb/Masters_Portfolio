@@ -11,11 +11,11 @@ A broad introduction to data visualization for information professionals. Studen
 1. README.md
     - Overview document detailing repository contents
     
-2. [Final Poster Project](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Data)
+2. [Final Poster Project](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST719_InformationVisualization/Final%20Poster%20Project.pdf)
     - Project instructions
     
-3. [Project_Updates](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Project_Updates)
-    - Agile Kanban board & project summary for all 3 project updates
+3. [Data](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST687_AppliedDataScience/Project_Updates)
+    - Data folder contains the 4 csv data files. Each csv is a year of weekly avocado sale data collected from the Hass Avocado Board website. 
     
 4. [IST 687 Final Project.RMD](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST687_AppliedDataScience/IST%20687%20Final%20Project.Rmd)
     - R Markdown script submission
