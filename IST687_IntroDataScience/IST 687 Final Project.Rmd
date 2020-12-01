@@ -1,0 +1,700 @@
+---
+title: '"Team 1 Final Project"'
+author: "Jonathon Parry, Kevin Vogel, and Courtney Zimmer"
+date: "09/16/2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+
+### Overview
+```{r intro}
+# The intent of this project is to analyze a breakdown of crime occurrences in Boston and determine from historical data what can be expected in the future.
+
+# For purposes of this project, all code will remain in this project, but only results that directly affected the outcome of the project will be included in the final Word and PowerPoint submission. 
+
+# The intenet of including all code is to show the incredible amount of work that was done in pursuit of completing this project. 
+
+# Code will be organized by section of work completed and code not included in final analysis will be broken into it's own subsection. 
+```
+### Install all packages reqired. Only install once!!!
+```{r install}
+#install.packages("rmarkdown")
+#install.packages("plyr")
+#install.packages("lubridate")
+#install.packages("data.table")
+#install.packages("varhandle")
+#install.packages("ggrepel")
+#install.packages("maps")
+
+library(ggplot2)
+library(plyr)
+library(lubridate)
+library(data.table) #faster way to read large dataset
+library(varhandle) #load the function unfactor
+library(ggrepel) #load ggrepel
+library(readxl)
+library(sqldf)
+library(scales)
+
+# Not used
+# library(usmap) Unable to use due to lack Google API code for geocode() function
+# library(maps)
+```
+
+### Import the 'Weather.xlsx' and 'Crime.xlsx' from desktop.
+```{r import}
+## This section included importing the data set from a folder entitled "Boston Crime" that includes the 'Crime' and 'Weather' .xlsx files. 
+
+# To import from your desktop, three method.
+# 1) In the "Environment" tab in the top right corner, use the import dataset function.
+# 2) In the "Environment" tab in the top right corner, use the import dataset to see the code and copy it below
+# 3) Replace your directory folder path below.
+
+Weather <- read_excel("C:/Users/jonat/Desktop/Boston Crime/Weather.xlsx")
+# View(Weather)
+Crime <- read_excel("C:/Users/jonat/Desktop/Boston Crime/Crime.xlsx")
+# View(Crime)
+
+# To combine the data sets, the date column was use. Initial formatting was completed to ensure both dataframes where of the 'Date' format.
+# This creates a combined table of Crime and Weather.
+Weather$Date <- as.Date(as.POSIXct(Weather$Date,format='%Y-/%m-/%d %H:%M:%S'))
+Crime$OCCURRED_ON_DATE_NOTIME <- as.Date(as.POSIXct(Crime$OCCURRED_ON_DATE,format='%m/%d/%Y %H:%M:%S %p'))
+Final <- merge.data.frame(Crime, Weather, by.x="OCCURRED_ON_DATE_NOTIME", by.y="Date", all.x = TRUE)
+Final$MonthName <- factor(Final$MONTH, labels = c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"))
+```
+
+### Build Dataframes and munging
+```{r dataframe}
+# 'str' command to determine the structure of the data (i.e. make sure we have the data types in each column)
+str(Final)
+# After thie initial formatting completed with the date formats, no additional munging was required. 
+```
+
+### Analysis Section
+```{r analysis}
+
+summary(Final)
+
+## Creating subsections of the Final dataset for analysis.
+# By hour
+hour <- as.data.frame(table(Final$HOUR))
+
+# By day
+day <- as.data.frame(table(Final$DAY_OF_WEEK))
+dayNum <- c(6,1,7,0,5,2,3)
+day <- cbind(day,dayNum)
+
+# By month
+month <-as.data.frame(table(Final$MONTH))
+
+# By year
+year <- as.data.frame(table(Final$YEAR)) # 199 days in 2015, 365 in 2016, 365 in 2017, and 275 in 2018.
+year$Days <- c(199,365,364,275)
+year$AvgDay <- year$Freq/year$Days
+yearname <- c("Year", "Frequency of Crime", "Number of Days in Year", "Average Occurrences of Crime Per Day")
+names(year)<-yearname
+
+# Homework 4 function to do basic analysis on the inputVector
+DescStat <- function(inputVector)
+{
+  cat("Mean:",mean(inputVector))
+  cat("\n")      
+  cat("Median:",median(inputVector))
+  cat("\n") 
+  cat("Min:",min(inputVector))
+  cat("\n") 
+  cat("Max:",max(inputVector))
+  cat("\n") 
+  cat("Standard Deviation:",sd(inputVector))
+  cat("\n") 
+  cat("Quantile (0.05 - 0.95):", quantile(inputVector, probs = c(0.05,0.95)))
+  cat("\n") 
+  cat("\n")
+  # cat("SKewness:", skewness(inputVector, na.rm = TRUE))
+}
+
+## Summary of basic statistics to guide further analysis.
+cat("Hour Summary","\n")
+DescStat(hour$Freq)
+cat("Day Summary","\n")
+DescStat(day$Freq)
+cat("Month Summary","\n")
+DescStat(month$Freq)
+cat("Annual Summary","\n")
+DescStat(year$Freq)
+
+## Trying to summate daily summary for the data set
+dayoverall <- as.data.frame(sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) from Final GROUP BY (OCCURRED_ON_DATE_NOTIME)"))
+dayname <- c("Date", "Number of Crimes")
+names(dayoverall) <- dayname
+DescStat(dayoverall$`Number of Crimes`)
+dayoverMean <- mean(dayoverall$`Number of Crimes`)
+dayoverMin <- min(dayoverall$`Number of Crimes`)
+dayoverMax <- max(dayoverall$`Number of Crimes`)
+
+## Trying to map annual lines on top of each other
+day2015 <- sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) from Final where YEAR = 2015 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+day2016 <- sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) from Final where YEAR = 2016 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+day2017 <- sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) from Final where YEAR = 2017 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+day2018 <- sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) from Final where YEAR = 2018 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+
+temp2015 <- sqldf("select OCCURRED_ON_DATE_NOTIME, AvgTemp from Final where YEAR = 2015 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+temp2016 <- sqldf("select OCCURRED_ON_DATE_NOTIME, AvgTemp from Final where YEAR = 2016 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+temp2017 <- sqldf("select OCCURRED_ON_DATE_NOTIME, AvgTemp from Final where YEAR = 2017 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+temp2018 <- sqldf("select OCCURRED_ON_DATE_NOTIME, AvgTemp from Final where YEAR = 2018 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+
+prcp2015 <- sqldf("select OCCURRED_ON_DATE_NOTIME, Prcp from Final where YEAR = 2015 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+prcp2016 <- sqldf("select OCCURRED_ON_DATE_NOTIME, Prcp from Final where YEAR = 2016 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+prcp2017 <- sqldf("select OCCURRED_ON_DATE_NOTIME, Prcp from Final where YEAR = 2017 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+prcp2018 <- sqldf("select OCCURRED_ON_DATE_NOTIME, Prcp from Final where YEAR = 2018 GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+
+# Formatting out the year
+day2015$OCCURRED_ON_DATE_NOTIME <- format(day2015$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+day2016$OCCURRED_ON_DATE_NOTIME <- format(day2016$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+day2017$OCCURRED_ON_DATE_NOTIME <- format(day2017$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+day2018$OCCURRED_ON_DATE_NOTIME <- format(day2018$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+
+temp2015$OCCURRED_ON_DATE_NOTIME <- format(temp2015$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+temp2016$OCCURRED_ON_DATE_NOTIME <- format(temp2016$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+temp2017$OCCURRED_ON_DATE_NOTIME <- format(temp2017$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+temp2018$OCCURRED_ON_DATE_NOTIME <- format(temp2018$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+
+prcp2015$OCCURRED_ON_DATE_NOTIME <- format(prcp2015$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+prcp2016$OCCURRED_ON_DATE_NOTIME <- format(prcp2016$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+prcp2017$OCCURRED_ON_DATE_NOTIME <- format(prcp2017$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+prcp2018$OCCURRED_ON_DATE_NOTIME <- format(prcp2018$OCCURRED_ON_DATE_NOTIME, format="%m-%d")
+
+# Merging the data set
+overlapday <- merge(day2015,day2016, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,day2017, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,day2018, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+
+overlapday$Max <- apply(overlapday[,2:5],1,max, na.rm=TRUE)
+overlapday$Min <- apply(overlapday[,2:5],1,min, na.rm=TRUE)
+overlapday$Avg <- apply(overlapday[,2:5],1,mean, na.rm=TRUE)
+overlapday$Diff <- overlapday$Max - overlapday$Min
+
+overlapday <- merge(overlapday ,temp2015, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,temp2016, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,temp2017, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,temp2018, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+
+overlapday$Max_Temp <- apply(overlapday[,10:13],1,max, na.rm=TRUE)
+overlapday$Min_Temp <- apply(overlapday[,10:13],1,min, na.rm=TRUE)
+overlapday$Avg_Temp <- apply(overlapday[,10:13],1,mean, na.rm=TRUE)
+overlapday$Diff_Temp <- overlapday$Max_Temp - overlapday$Min_Temp
+
+overlapday <- merge(overlapday ,prcp2015, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,prcp2016, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,prcp2017, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+overlapday <- merge(overlapday ,prcp2018, by='OCCURRED_ON_DATE_NOTIME', all = TRUE, incomparables = NULL)
+
+overlapday$Max_Prcp <- apply(overlapday[,18:21],1,max, na.rm=TRUE)
+overlapday$Min_Prcp <- apply(overlapday[,18:21],1,min, na.rm=TRUE)
+overlapday$Avg_Prcp <- apply(overlapday[,18:21],1,mean, na.rm=TRUE)
+overlapday$Diff_Prcp <- overlapday$Max_Prcp - overlapday$Min_Prcp
+
+overlapname <- c("Date","2015","2016","2017","2018", "Maximum","Minimum","Average", "Difference", "2015_Temp", "2016_Temp","2017_Temp","2018_Temp","Max_Temp","Min_Temp","Average_Temp","Difference_Temp", "2015_Prcp", "2016_Prcp", "2017_Prcp", "2018_Prcp", "Max_Prcp","Min_Prcp","Average_Prcp","Difference_Prcp")
+names(overlapday) <- overlapname
+
+## Summating daily summary by year
+dayannual <- as.data.frame(sqldf("select OCCURRED_ON_DATE_NOTIME, YEAR, count(OCCURRED_ON_DATE_NOTIME) from Final GROUP BY (YEAR)"))
+
+# Counting the number warrant arrest offenses and grouping them by date
+warrants <- sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) 
+                 from Final where OFFENSE_CODE_GROUP = 'Warrant Arrests' group by (OCCURRED_ON_DATE_NOTIME)")
+warrantsname <- c("Date", "Warrant_Arrest")
+names(warrants) <- warrantsname
+DescStat(warrants$`Warrant_Arrest`)
+
+# Counting the number larceny offenses and grouping them by date
+Larceny <- sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) 
+                 from Final where OFFENSE_CODE_GROUP = 'Larceny' GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+Larcenyname <- c("Date", "Larceny")
+names(Larceny) <- Larcenyname
+DescStat(Larceny$`Larceny`)
+
+# Counting the number offenses that involved a shooting and grouping them by date
+shootingCrimes <- sqldf("select OCCURRED_ON_DATE_NOTIME, count(OCCURRED_ON_DATE_NOTIME) 
+                 from Final where SHOOTING = 'Y' GROUP BY (OCCURRED_ON_DATE_NOTIME)")
+crimename <- c("Date", "Shooting_Crimes")
+names(shootingCrimes) <- crimename
+DescStat(shootingCrimes$`Shooting_Crimes`)
+
+# merge data together
+mergeCrimes <- merge(warrants,Larceny, by='Date', all = TRUE, incomparables = NULL)
+mergeCrimes <- merge(mergeCrimes,shootingCrimes, by='Date', all = TRUE, incomparables = NULL)
+```
+
+### Visual Comparisons
+```{r Comparison}
+
+
+#install.packages("tidyverse") #installs package
+library(tidyverse) #loads package
+n <- 10 #creates a value that the charts will use
+
+#creates a df named district that shows the total number of crimes in each district by offense group
+district <- Final %>%
+  group_by(`DISTRICT`, `OFFENSE_CODE_GROUP`) %>%
+  summarise(total = n()) %>%
+  na.omit() %>%
+  top_n(n) 
+district
+
+#plots the district df without district subgroups
+district %>%
+  ggplot(aes(reorder(x = `OFFENSE_CODE_GROUP`, total), y = total)) +
+  geom_col(fill = 'red') +
+  geom_text(aes(label=total), color='red', hjust = 1, size = 1) +
+  coord_flip() +
+  #facet_wrap(~ `DISTRICT`) +
+  labs(x = 'Offense Types', 
+       y = "Count")
+
+#plots the crimes by district without the offense groups
+district %>%
+  ggplot(aes(reorder(x = `DISTRICT`, total), y = total)) +
+  geom_col(fill = 'red') +
+  geom_text(aes(label=total), color='red', hjust = 1, size = 1) +
+  coord_flip() +
+  #facet_wrap(~ `OFFENSE_CODE_GROUP`) +
+  labs(x = 'Offense Types', 
+       y = "Count")
+
+#plots the count of offenses by district
+district %>%
+  ggplot(aes(reorder(x = `OFFENSE_CODE_GROUP`, total), y = total)) +
+  geom_col(fill = 'red') +
+  geom_text(aes(label=total), color='red', hjust = 1, size = 1) +
+  coord_flip() +
+  facet_wrap(~ `DISTRICT`) +
+  labs(x = 'Offense Types', 
+       y = "Count")
+
+#inverse of the previous graph
+district %>%
+  ggplot(aes(reorder(x = `DISTRICT`, total), y = total)) +
+  geom_col(fill = 'red') +
+  geom_text(aes(label=total), color='red', hjust = 1, size = 1) +
+  coord_flip() +
+  facet_wrap(~ `OFFENSE_CODE_GROUP`) +
+  labs(x = 'Offense Types', 
+       y = "Count")
+
+#plots all of the districts as colors on a bar graph by offense group; probably not insightful; definitely not insightful for those that are colorblind
+ggplot(data=district, aes(x=OFFENSE_CODE_GROUP, y=total, fill=DISTRICT)) +
+  coord_flip() +
+  #scale_fill_brewer(palette="Reds") +
+  geom_bar(stat="identity")
+
+#sets n to a new value
+n <- 100
+
+#creates df similar to previous df but only where a shooting occurred
+districtShooting <- Final %>%
+  group_by(`DISTRICT`, `SHOOTING`, `OFFENSE_CODE_GROUP`) %>%
+  summarise(total = n()) %>%
+  na.omit() %>%
+  top_n(n) 
+districtShooting
+
+#creates chart that shows what other crimes are associated with gun violence
+districtShooting %>%
+  ggplot(aes(reorder(x = `OFFENSE_CODE_GROUP`, total), y = total)) +
+  geom_col(fill = 'red') +
+  geom_text(aes(label=total), color='red', hjust = 1, size = 1) +
+  coord_flip() +
+  #facet_wrap(~ `DISTRICT`) +
+  labs(x = 'Offense Types', 
+       y = "Count")
+
+#plots shooting df crimes by area and crime related to shooting
+ggplot(data=districtShooting, aes(x=OFFENSE_CODE_GROUP, y=total, fill=DISTRICT)) +
+  coord_flip() +
+  #scale_fill_brewer(palette="Reds") +
+  geom_bar(stat="identity")
+
+#The best thing to do is probably to decide on a graph we like that is informative and insightful and use it for both the analysis of the shooting df and the all crimes df. WE still need to look at this by day. I think knowing that we can use SQL inside of R will help us moving forward.
+
+#gets the total count of crime by district by day
+
+districtDaily <- Final %>%
+  group_by(`DISTRICT`, `OCCURRED_ON_DATE_NOTIME`, `YEAR`, `MONTH`, `DAY_OF_WEEK`) %>%
+  summarise(total = n()) %>%
+  na.omit() %>%
+  top_n(10000)
+districtDaily
+
+#gets the total count of crime for Boston by day
+districtDailyBoston <- Final %>%
+  group_by(`OCCURRED_ON_DATE_NOTIME`, `YEAR`, `MONTH`, `DAY_OF_WEEK`) %>%
+  summarise(total = n()) %>%
+  na.omit() %>%
+  top_n(10000)
+districtDailyBoston
+
+districtDailyShooting <- Final %>%
+  group_by(`DISTRICT`, `SHOOTING`, `OCCURRED_ON_DATE_NOTIME`, `YEAR`, `MONTH`, `DAY_OF_WEEK`) %>%
+  summarise(total = n()) %>%
+  na.omit() %>%
+  top_n(10000)
+districtDaily
+
+#creates variables to be tested against each other
+A1 <- sqldf("select total from districtDaily where DISTRICT = 'A1'")
+A15 <- sqldf("select total from districtDaily where DISTRICT = 'A15'")
+A7 <- sqldf("select total from districtDaily where DISTRICT = 'A7'")
+B2 <- sqldf("select total from districtDaily where DISTRICT = 'B2'")
+B3 <- sqldf("select total from districtDaily where DISTRICT = 'B3'")
+C6 <- sqldf("select total from districtDaily where DISTRICT = 'C6'")
+C11 <- sqldf("select total from districtDaily where DISTRICT = 'C11'")
+D4 <- sqldf("select total from districtDaily where DISTRICT = 'D4'")
+D14 <- sqldf("select total from districtDaily where DISTRICT = 'D14'")
+E5 <- sqldf("select total from districtDaily where DISTRICT = 'E5'")
+E13 <- sqldf("select total from districtDaily where DISTRICT = 'E13'")
+E18 <- sqldf("select total from districtDaily where DISTRICT = 'E18'")
+
+Boston <- sqldf("select total from districtDailyBoston")
+ 
+#t.test(x, y)
+
+#creates boxplot of daily crime by district
+
+ggplot(districtDaily, aes(x = DISTRICT, y = total, group = DISTRICT)) + ggtitle("boxplots of daily crime") + geom_boxplot()
+
+#creates boxplot of daily shootings by district
+
+ggplot(districtDailyShooting, aes(x = DISTRICT, y = total, group = DISTRICT)) + ggtitle("boxplots of daily shootings") + geom_boxplot()
+
+ggplot(data =Final, aes(x=Final$DAY_OF_WEEK)) + geom_bar(stat = "count") +
+  labs(x = "Day of the Week") +
+  ggtitle("Count of Incidents by Day of the Week") +
+    theme_bw() +
+  theme(plot.title = element_text(hjust = 0.5)) +
+  scale_x_discrete(limits=c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"))
+
+districtDaily <- Final %>%
+  group_by(`DISTRICT`, OCCURRED_ON_DATE_NOTIME) %>%
+  summarise(total = n())
+
+districtDaily <- districtDaily[order(districtDaily$OCCURRED_ON_DATE_NOTIME),] 
+
+# crime over time for district A1
+
+p <- districtDaily %>%
+  filter(DISTRICT=="A1")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time A1") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+# crime over time for district A15
+
+p <- districtDaily %>%
+  filter(DISTRICT=="A15")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time A15") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+# crime over time for district A7
+
+p <- districtDaily %>%
+  filter(DISTRICT=="A7")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time A7") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+# crime over time for district B2
+
+p <- districtDaily %>%
+  filter(DISTRICT=="B2")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time B2") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+# crime over time for district B3
+
+p <- districtDaily %>%
+  filter(DISTRICT=="B3")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time B3") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+# crime over time for district C6
+
+p <- districtDaily %>%
+  filter(DISTRICT=="C6")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time C6") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+# crime over time for district C11
+
+p <- districtDaily %>%
+  filter(DISTRICT=="C11")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time C11") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+# crime over time for district D4
+
+p <- districtDaily %>%
+  filter(DISTRICT=="D4")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time D4") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+# crime over time for district D14
+
+p <- districtDaily %>%
+  filter(DISTRICT=="D14")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time D14") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+# crime over time for district E5
+
+p <- districtDaily %>%
+  filter(DISTRICT=="E5")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time E5") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+# crime over time for district E13
+
+p <- districtDaily %>%
+  filter(DISTRICT=="E13")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time E13") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+# crime over time for district E18
+
+p <- districtDaily %>%
+  filter(DISTRICT=="E18")
+
+p %>%
+  ggplot(aes(x = OCCURRED_ON_DATE_NOTIME, y = total)) + 
+  ggtitle("line chart of crime by day over time E18") + 
+  geom_line() +
+  geom_smooth(method='lm')
+
+
+districtDaily <- Final %>%
+  group_by(`DISTRICT`, `OCCURRED_ON_DATE_NOTIME`, `YEAR`, `MonthName`, `DAY_OF_WEEK`) %>%
+  summarise(total = n())
+
+# Graphs the number of Warrant Arrest, Larceny and shooting crimes against each other.
+warrantCrime <- ggplot(data = mergeCrimes, aes(x = mergeCrimes$Date)) +
+                  geom_line(aes(y = mergeCrimes$`Warrant_Arrest`, color = "WarrantArrest")) +
+                  geom_line(aes(y = mergeCrimes$`Larceny`, color = "Larceny")) +
+                  geom_line(aes(y = mergeCrimes$`Shooting_Crime`, color = "Shootings")) +
+                  scale_color_manual("",
+                                     breaks = c( "Larceny","WarrantArrest", "Shootings"),
+                                     values = c("cadetblue", "goldenrod2", "deeppink4")) + 
+  ggtitle("Warrants, Larceny and Shooting Crimes") +  labs(x = 'Day',  y = "Number of Occurances") 
+
+warrantCrime
+
+districtDaily <- Final %>%
+  group_by(`DISTRICT`, `OCCURRED_ON_DATE_NOTIME`, `YEAR`, `MonthName`, `DAY_OF_WEEK`) %>%
+  summarise(total = n())
+
+#boxplot of crime by day of week
+districtDaily %>%
+  ggplot(aes(x = DAY_OF_WEEK, y = total, group = DAY_OF_WEEK)) +
+  ggtitle("boxplots of crime by day of week") +
+  scale_x_discrete(limits=c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")) +
+  geom_boxplot()
+
+#boxplot of crime by month
+districtDaily%>%
+  ggplot(aes(x = MonthName, y = total, group = MonthName)) +
+  ggtitle("boxplots of crime by month") +
+  geom_boxplot()
+```
+
+### Additional Plots
+```{r plots}
+## Test drive of ggplot coding.
+histHour <- qplot(Final$HOUR, geom="histogram", binwidth =1, main="Occurence of Crime Summary by Hour", xlab = "Time of Day (Military)", fill = I("blue"), col=I("red"), alpha = I(0.2))
+histHour
+histMonth <- qplot(Final$MONTH, geom="histogram", main="Occurence of Crime Summary by Month", xlab = "Month", fill = I("green"), col=I("red"), alpha = I(0.2)) + scale_x_continuous(breaks = seq(0,12,1))
+histMonth
+histYear <- qplot(Final$YEAR, geom="histogram", binwidth =1, main="Occurence of Crime Summary by Year", xlab = "Year", fill = I("purple"), col=I("red"), alpha = I(0.2))
+histYear
+hist(Final$REPORTING_AREA, main="Crime By Reporting Area", xlab="Reporting Area (Code)", ylab ="Frequency (Count)")
+
+## Test Drive plots
+tempAnnual <- plot(Final$OCCURRED_ON_DATE_NOTIME, Final$AvgTemp, main = "Average Temperature", xlab = "Year", ylab ="Average Daily Temperature (F)" )
+tempAnnual
+tempBox <- ggplot(Final, aes(x= MonthName, y=AvgTemp)) + geom_boxplot()
+tempBox
+
+## Test Drive Lines
+hourLine <- ggplot(hour, aes(x= hour$Var1, y=hour$Freq, group=1)) + geom_point(color = "Red") + geom_line(color="Red")
+hourLine
+dayLine <- ggplot(day, aes(x=day$Var1, y=day$Freq, group=1)) + geom_point(color = "Red") + geom_line(color="Red")
+dayLine
+monthLine <- ggplot(month, aes(x=month$Var1, y=month$Freq, group=1)) + geom_point(color = "Red") + geom_line(color="Red")
+# Need to add in monthly average temperature.
+monthLine
+
+
+# Fair warning, this one melts your computer a little when you run it. Simply plots points on an x/y scatter based of lat/long
+# scatter <- ggplot(Final, aes(x=Final$Lat, y=Final$Long)) + scale_y_continuous(name="Longitude", breaks = c(-71.2,-71,0.01), limits=c(-71.2,-71)) + scale_x_continuous(name="Latitude", breaks=c(42.2,42.4,0.001), limits=c(42.2,42.4))
+# scatter <- scatter+ geom_point(aes(x=Final$Lat, y=Final$Long))
+# scatter
+
+## Pie Charts
+library(colorspace, pos=18)
+pieDay <- pie(day$Freq, labels=day$Var1, xlab="",  ylab="", main="Day of Week", col=rainbow_hcl(7))
+pieMonth <- pie(month$Freq, labels=month$Var1, xlab="",  ylab="", main="Month of Year", col=rainbow_hcl(12))
+pieYear <- pie(year$Freq, labels=year$Var1, xlab="",  ylab="", main="Year", col=rainbow_hcl(4))
+
+## Answering the question on if Crime has changed from 2015-2018
+dayoverallLine <- ggplot(dayoverall, aes(x=dayoverall$Date, y=dayoverall$`Number of Crimes`, group=1)) + geom_line(color = "Black")
+dayoverallLine <- dayoverallLine + geom_line(aes(y=dayoverMax), color="Red") + geom_line(aes(y=dayoverMin), color="Green") + geom_line(aes(y=dayoverMean), color = "Blue") +   labs(x = 'Day (By Year)',  y = "Number of Crimes") + ggtitle("Daily Crime Occurrence")
+dayoverallLine
+
+# Next part. Overlapping all the years.
+overlapdayLine <- ggplot(overlapday, aes(x=overlapday$Date, y =overlapday$`2015`, group=1)) + geom_line(color="Red")
+overlapdayLine <- overlapdayLine + geom_line(aes(y=overlapday$`2016`), color="Blue") + geom_line(aes(y=overlapday$`2017`), color="Green") + geom_line(aes(y=overlapday$`2018`), color="Orange") + geom_line(aes(y=dayoverMax), color="Black") + geom_line(aes(y=dayoverMin), color="Black") + geom_line(aes(y=dayoverMean), color = "Black")
+overlapdayLine <- overlapdayLine +  ggtitle("Overlapping Daily Crime Occurrence") +  labs(x = 'Day',  y = "Number of Crimes") 
+overlapdayLine
+
+overlapavg <- ggplot(overlapday, aes(x=overlapday$Date, y=overlapday$`Average`,group=1)) + geom_line(color="Red")
+overlapavg <- overlapavg + geom_col(aes(y=overlapday$`Average_Temp`,group=1))
+#overlapavg <- overlapavg + scale_x_date(name="Date", labels=NULL)+scale_y_continuous(name="Average Crime Occurrences",sec.axis = sec_axis(overlapday$Average_Temp,name="Average Temp"))
+overlapavg
+
+overlapmag <- ggplot(overlapday, aes(overlapday$Date, y=overlapday$`Average`, group=1)) + geom_line(color="Black")
+overlapmag <- overlapmag + geom_line(aes(y=overlapday$`Difference`), color = "Green")
+overlapmag
+
+n <- 10
+
+# Calculates the top 10 crimes by year
+OffenseYear <- Final %>%
+  group_by(`YEAR`,`OFFENSE_CODE_GROUP`) %>%
+  summarise(total = n()) %>%
+  na.omit() %>%
+  top_n(n) 
+
+# Graphs the top 10 crimes by year, allows you to see if a particular crime has increased or decreased of the 4 years
+OffenseYear  %>% ggplot(aes(reorder(x = `OFFENSE_CODE_GROUP`, total), y = total)) +
+  geom_bar(aes(fill=`OFFENSE_CODE_GROUP`),
+           stat="identity") +
+  facet_grid(~ `YEAR`) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(x = 'Offense Types', 
+       y = "Count of Offenses",
+       fill = 'Offense Types') +
+  ggtitle("Top 10 Offenses by Year") +
+  theme(legend.key.size = unit(0.5, "cm"), legend.key.width = unit(0.3, "cm"))
+
+plot_year <- ggplot(overlapday, aes(x=overlapday$`2015_Temp`, y=overlapday$`2015`)) + geom_point(colour="red") +  labs(x="Temperature", y="Average Crime") + ggtitle("Temperature vs. Crime Rate")
+plot_year <- plot_year + geom_point(aes(overlapday$`2016_Temp`, y=overlapday$`2016`), colour="blue") + geom_point(aes(overlapday$`2017_Temp`, y=overlapday$`2017`), colour="green")+ geom_point(aes(overlapday$`2018_Temp`, y=overlapday$`2018`), colour="purple")
+plot_year
+```
+
+### Model Section
+```{r model}
+
+# 'lm' will be used to do linear modeling on the data
+# First, looking at average crime as a function of average temperature
+model_avgday <- lm(formula=overlapday$Average~overlapday$Average_Temp, data=overlapday)
+summary(model_avgday)
+plot(model_avgday)
+plot(overlapday$Average~overlapday$Average_Temp, data=overlapday)
+
+# Using ggplot to visualize what was just calculated. 
+avgdayplot <- ggplot(overlapday,aes(overlapday$Average_Temp, y = overlapday$Average)) + geom_point() + stat_smooth(method="lm", color="red") + labs(x="Average Daily Temperature", y="Average Daily Crime") + ggtitle("Temperature vs. Crime Rate")
+avgdayplot
+
+# Attempting to determine if min or max temperature coorelated to high or low crime days.
+model_maxday <- lm(formula=overlapday$Maximum~overlapday$Max_Temp, data=overlapday)
+summary(model_maxday)
+plot(model_maxday)
+
+model_minday <- lm(formula=overlapday$Minimum~overlapday$Min_Temp, data=overlapday)
+summary(model_minday)
+plot(model_minday)
+# Not significant at 0.2347 and 0.188 Adjusted R-Squared.
+
+## Low R^2 (about 0.3), so let's try adding some more variables 
+model_prcp <- lm(formula=overlapday$Average~overlapday$Average_Temp+overlapday$Average_Prcp, data=overlapday)
+summary(model_prcp)
+plot(model_prcp)
+# Precipitation appears to be significant and increases our adjusted R squared by 0.3246
+
+
+# Let's try looking by year
+model_2015 <- lm(formula=overlapday$`2015`~overlapday$`2015_Temp`, data=overlapday)
+summary(model_2015)
+plot(model_2015)
+# Only 0.058 AR^2
+
+model_2016 <- lm(formula=overlapday$`2016`~overlapday$`2016_Temp`, data=overlapday)
+summary(model_2016)
+plot(model_2016)
+# Only 0.166 AR^2
+
+model_2017 <- lm(formula=overlapday$`2017`~overlapday$`2017_Temp`, data=overlapday)
+summary(model_2017)
+plot(model_2017)
+# 0.2939 AR^2
+
+model_2018 <- lm(formula=overlapday$`2018`~overlapday$`2018_Temp`, data=overlapday)
+summary(model_2018)
+plot(model_2018)
+# 0.2225 AR^2
+## None of the by year models appear to make a difference in relation to the collective model above (all years included)
+                                                                                                  
+```
+
