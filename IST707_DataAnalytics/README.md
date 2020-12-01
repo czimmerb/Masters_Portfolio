@@ -20,7 +20,7 @@ field. Hands-on experience with open-source software packages. The final project
 3. [IS707_Project_Final.Rmd](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST707_DataAnalytics/IS707_Project_Final.Rmd)
     - R Markdown script for the final project
     
-4. [IS707_Project_Final.pdf](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST707_DataAnalytics/IS707_Project_Final.pdf)
+4. [IS707_Project_Final.pdf](https://github.com/czimmerb/Masters_Portfolio/blob/main/IST707_DataAnalytics/IST707_Project_Final.pdf)
     - PDF of the R script
     
 5. [IST707FINALTeampresentation.pptx](https://github.com/czimmerb/Masters_Portfolio/tree/main/IST707_DataAnalytics/IST707FINALTeampresentation.pptx)
