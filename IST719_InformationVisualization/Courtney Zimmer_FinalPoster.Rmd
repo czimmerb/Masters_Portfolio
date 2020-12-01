@@ -1,0 +1,301 @@
+---
+title: "Final Poster IST 719"
+author: "Courtney Zimmer"
+output:
+  pdf_document: default
+  html_notebook: default
+  html_document:
+    df_print: paged
+---
+
+
+## Loading the Data
+```{r}
+my.dir <- "/Users/ihrtrobot/Documents/Grad School/Summer 2020/IST 719 - Viz/"
+
+# Reading in each of the yearly csv files and combining them into a single dataframe avo_orig
+avo_orig <- read.csv( "2017-plu-total-hab-data.csv" , header = TRUE, stringsAsFactors = FALSE)
+avo_orig <- rbind(avo_orig, read.csv("2018-plu-total-hab-data.csv", header = TRUE))
+                  
+avo_orig <- rbind(avo_orig,read.csv( "2019-plu-total-hab-data.csv") , header = TRUE)
+avo_orig <- rbind(avo_orig,read.csv("2020-plu-total-hab-data.csv"), header = TRUE)
+```
+
+
+## Library Packages
+```{r}
+library(sm)
+library(ggplot2)
+library(plyr)
+library(dplyr)
+```
+
+
+```{r}
+# Getting an understanding of the dataframe and variables
+str(avo_orig)
+```
+
+## Data Cleaning
+```{r}
+# Creating a function that will trim leading and trailing white space
+trim <- function( x ) {
+  gsub("(^[[:space:]]+|[[:space:]]+$)", "", x)
+}
+
+# triming the type column in our original file
+avo_orig$Type <- trim(avo_orig$Type)
+```
+
+```{r}
+# Adding Month-year and Month Name as columns in my data set
+avo_orig$Current.Year.Week.Ending <- as.Date(avo_orig$Current.Year.Week.Ending, 
+                                             format="%Y-%m-%d %H:%M:%S")
+avo_orig$Year <- as.numeric(format(avo_orig$Current.Year.Week.Ending,'%Y'))
+avo_orig$Month <- format(avo_orig$Current.Year.Week.Ending,'%b')
+
+# Creating a data set that only includes the total us data
+avo_tot <- subset(avo_orig, Geography =="Total U.S.")
+
+# Data set removing the Total U.S. Values
+avo <- subset(avo_orig, Geography !="Total U.S.")
+
+# Creating a Region specific data set
+avo_reg <- subset(avo, Geography == "West" | Geography == "South Central" | Geography == "Northeast" | Geography == "Southeast" 
+                  | Geography == "Great Lakes" | Geography == "Midsouth" | Geography == "Plains" | Geography == "California")
+
+# Removing the Region rows so that the data set only containes city data
+avo_city <- subset(avo, Geography != "West" & Geography != "South Central" & Geography != "Northeast" & 
+                    Geography != "Southeast" & Geography != "Great Lakes" & Geography != "Midsouth" & 
+                    Geography != "Plains" & Geography != "California")
+
+# Setting colors used for conventional versus organic
+colors <- c("#908c48", "#42421c")
+```
+
+## Plots
+```{r}
+# Aggregating avocado type, year and average volume sold
+type.sold <- aggregate(avo_tot$Total.Bulk.and.Bags.Units, list(avo_tot$Type, avo_tot$Year), mean)
+# renaming aggregation columns
+colnames(type.sold) <- c("Type", "Year", "Avg.Volume")
+# converting the volume into millions
+type.sold$Avg.Volume <- type.sold$Avg.Volume/1000000
+
+ggplot(type.sold, aes(x = Year, y = Avg.Volume, fill = Type)) + geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = colors) +
+  labs (title = "Total US Volume Sold", x = "Year", y = "Average Volume Sold (Millions)") + theme_classic()
+
+```
+
+
+```{r}
+df <- data.frame(type = avo_tot$Type, avg.price = avo_tot$ASP.Current.Year)
+d <- ggplot(df, aes(x = avg.price)) + geom_density(color = "#562F0F", fill = "Lightgreen"
+                                                   , alpha = 0.3)
+d <- d + geom_vline(aes(xintercept = mean(avg.price))
+                    , color = "darkgreen", linetype = "dashed", size = 1) + 
+  labs (title = "Avocado Price Density", x = "Average Price", y = "Density")
+d
+```
+
+```{r}
+mu <- ddply(df, "type", summarise, grp.mean = mean(avg.price))
+mu
+
+d1 <- ggplot(df, aes(x=avg.price, fill=type)) + geom_density(alpha = 0.5, color = NA) + 
+      geom_vline(data = mu, aes(xintercept = grp.mean, fill = type), color = c("#562F0F"), 
+                 linetype = "dashed") 
+
+d1 <- d1 + scale_fill_manual(values = colors)
+d1
+
+```
+
+```{r}
+# Subsetting the avo_tot data frame to only have the year, type and average price
+df.2 <- data.frame(year = avo_tot$Year, type = avo_tot$Type, avg.price = avo_tot$ASP.Current.Year)
+
+ggplot(df.2, aes(x = avg.price, color = type, fill = type)) + 
+  geom_histogram(color = "white") + 
+  facet_wrap(~year) + scale_fill_manual(values = colors) + 
+  theme_light() 
+                                                               
+```
+
+```{r}
+# subsetting the avo_tot data frame for only conventional avocado type
+c <- subset(avo_tot, Type == "Conventional")
+ggplot(c) + aes(x=ASP.Current.Year) + geom_histogram(fill="#908c48", color="white") +
+  ggtitle("Histogram of Conventional Avocado Pricing") + 
+  xlab("Average Sale Price") + 
+  ylab("Count")
+
+# subsetting the avo_tot data frame for only organic avocado type
+o <- subset(avo_tot, Type == "Organic")
+ggplot(o) + aes(x=ASP.Current.Year) + geom_histogram(fill="#42421c", color="white") +
+  ggtitle("Histogram of Organic Avocado Pricing") + 
+  xlab("Average Sale Price") + 
+  ylab("Count")
+```
+
+
+
+
+```{r}
+avo.f <- factor(avo_tot, levels = c(2017,2018,2019,2020)
+                , labels = c("2017", "2018", "2019", "2020"))
+sm.density.compare(avo_tot$ASP.Current.Year, avo_tot$Year
+                   , xlab = "Average Price")
+colfill <- c(2:(2+length(levels(avo.f))))
+legend("topleft", locator(1), levels(avo.f), fill = colfill)
+```
+
+
+```{r}
+month.name <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
+
+# aggregating the avo_tot data frame to show months and average volume sold
+avg.volume <- aggregate(avo_tot$Total.Bulk.and.Bags.Units, 
+                        list(avo_tot$Month), mean)
+colnames(avg.volume) <- c("Month", "Avg.Volume")
+
+# converting average sold into millions
+avg.volume$Avg.Volume <- avg.volume$Avg.Volume/1000000
+
+# sorthing the months name
+avg.volume$Month <- factor(avg.volume$Month, levels = month.name)
+
+# creating subsets by avocado type
+# avg_volume.c <- avg.volume[avg.volume$Type == "Conventional",]
+# avg_volume.o <- avg.volume[avg.volume$Type == "Organic",]
+# 
+# ggplot(avg_volume.c, aes(x = Month, y = Avg.Volume)) +  
+#             geom_bar(stat = "identity", fill = "#908c48") + 
+#             theme_classic() + 
+#             labs (title = "Total US Conventional Average Volume Sold", 
+#                       x = "Month", y = "Average Sold (Millions)")
+# 
+# ggplot(avg_volume.o, aes(x = Month, y = Avg.Volume)) +  
+#             geom_bar(stat = "identity", fill = "#42421c") + 
+#             theme_classic() + 
+#             labs (title = "Total US Organic Average Volume Sold", 
+#                       x = "Month", y = "Average Sold (Millions)")
+
+ggplot(avg.volume, aes(x = Month, y = Avg.Volume)) +  
+            geom_bar(stat = "identity", fill = "#73793b") + 
+            theme_classic() +
+            labs (title = "Total US Average Volume Sold", 
+                      x = "Month", y = "Average Sold (Millions)")
+```
+```{r}
+# avg.volume2 <- data.frame(avo_tot$Month, (avo_tot$Total.Bulk.and.Bags.Units/1000000))
+# colnames(avg.volume2) <- c("Month", "Volume.Sold")
+# avg.volume2$Month <- factor(avg.volume2$Month, levels = month.name)
+```
+
+
+```{r}
+# Aggregating the Average amount sold & average price by Region
+tbl <- aggregate(avo_city$Total.Bulk.and.Bags.Units, list(avo_city$Geography, avo_city$Type), mean)
+# Adding column names
+colnames(tbl) <- c("Geography", "Type", "Avg.sold")
+# Dividing the average sold by thousand
+tbl["Avg.sold"] <- (tbl$Avg.sold/1000000)
+# Sorting the table by the most average sold to the least
+tbl <- tbl[order(-tbl$Avg.sold), ]
+
+ggplot(tbl, aes(x = reorder(Geography, Avg.sold), y = Avg.sold, fill = Type)) + 
+        geom_bar(stat = "identity", position = "dodge") +
+        scale_fill_manual(values = colors) +
+        coord_flip() + theme_classic() + 
+        labs(x = "Regions", y = "Average Sold (Millions)", 
+                title = "Average Avocados Sold by Region")
+
+
+```
+
+
+
+```{r}
+# aggregating the avo_tot to get average volume sold and average price by year, month and type
+df <- aggregate(list(avo_tot$Total.Bulk.and.Bags.Units, avo_tot$ASP.Current.Year), 
+                list(avo_tot$Year,avo_tot$Month, avo_tot$Type), mean)
+
+colnames(df) <- c("Year", "Month", "Type", "AvgVolume", "AvgPrice")
+df$Month <- factor(df$Month, levels = month.name)
+df["AvgVolume"] <- (df$AvgVolume/1000000)
+
+df.c <- df[df$Type == "Conventional",]
+df.o <- df[df$Type == "Organic",]
+
+ggplot(data = df.c, aes(x = Month, y = AvgPrice, group = Year)) + 
+              geom_line(color = "#908c48") + facet_wrap(~ Year) + 
+              theme(axis.text.x = element_text(angle = 45)) +
+              geom_point(color = "#908c48") + ggtitle("Conventional Avocado's Average Price") +
+              labs(y = "Average Sold (Millions)")
+
+ggplot(data = df.o, aes(x = Month, y = AvgPrice, group = Year)) + 
+              geom_line(color = "#42421c") + facet_wrap(~ Year) + 
+              theme(axis.text.x = element_text(angle = 45)) +
+              geom_point(color = "#42421c") + ggtitle("Organic Avocado's Average Price")+
+              labs(y = "Average Sold (Millions)")
+
+```
+
+```{r}
+avo_tot$Month <- factor(avo_tot$Month, levels = month.name)
+df.c <- avo_tot[avo_tot$Type == "Conventional",]
+df.o <- avo_tot[avo_tot$Type == "Organic",]
+
+ggplot(data = avo_tot, aes(x = Month, y = ASP.Current.Year, color = Type)) + 
+              geom_boxplot() +
+              theme_classic() +
+              ylab("Average Price") +
+              ggtitle("Average Price by Month") +
+              scale_color_manual(values = colors) + 
+              theme(panel.background = element_rect(fill = "#dbdbb2"))
+
+ggplot(data = avo_tot, aes(x = Month, y = ASP.Current.Year, fill = Type)) + 
+              geom_boxplot(alpha = 0.8) +
+              theme_classic() +
+              ylab("Average Price") +
+              ggtitle("Average Price by Month") +
+              scale_fill_manual(values = colors)
+```
+
+```{r}
+df <- aggregate(avo_reg$Total.Bulk.and.Bags.Units, list(avo_reg$Year, avo_reg$Geography), sum)
+colnames(df) <- c("Year", "Region", "AvgVolume")
+
+df.17 <- df[df$Year == "2017",]
+df.18 <- df[df$Year == "2018",]
+df.19 <- df[df$Year == "2019",]
+df.20 <- df[df$Year == "2020",]
+
+ggplot(data = df.17, aes(x = Region, y = (AvgVolume/1000000))) +          
+  geom_bar(stat = "identity", width=0.7, fill = "#73793b") +
+  labs(x = "Region", y = "Total Sales (Millions)", title = "2017 Total Sales") +
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 45))
+
+ggplot(data = df.18, aes(x = Region, y = (AvgVolume/1000000))) +          
+  geom_bar(stat = "identity", width=0.7, fill = "#73793b") +
+  labs(x = "Region", y = "Total Sales (Millions)", title = "2018 Total Sales") +
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 45))
+
+ggplot(data = df.19, aes(x = Region, y = (AvgVolume/1000000))) +          
+  geom_bar(stat = "identity", width=0.7, fill = "#73793b") +
+  labs(x = "Region", y = "Total Sales (Millions)", title = "2019 Total Sales") +
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 45))
+
+ggplot(data = df.20, aes(x = Region, y = (AvgVolume/1000000))) +          
+  geom_bar(stat = "identity", width=0.7, fill = "#73793b") +
+  labs(x = "Region", y = "Total Sales (Millions)", title = "2020 Total Sales") +
+  theme_classic() +
+  scale_x_discrete(guide = guide_axis(angle = 45)) + 
+  ylim(c(0,350))
+       
+```
