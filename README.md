@@ -21,4 +21,4 @@
 
 7. [Portfolio Paper Submission](https://github.com/czimmerb/Masters_Portfolio/blob/main/CourtneyZimmer_PortfolioSubmission.pdf)
 
-8. [Portfolio Presentation Deck](https://github.com/czimmerb/Masters_Portfolio/blob/main/CourtneyZimmer_PortfolioSubmission.pdf)
+8. [Portfolio Presentation Deck](https://github.com/czimmerb/Masters_Portfolio/blob/main/CourtneyZimmer_PresentationDeck.pptx)
