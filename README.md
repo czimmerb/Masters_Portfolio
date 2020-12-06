@@ -19,4 +19,6 @@
 
 6. [Resume](https://github.com/czimmerb/Masters_Portfolio/blob/main/CourtneyZimmer_Resume.pdf)
 
-7. Portfolio Submission
+7. [Portfolio Paper Submission](https://github.com/czimmerb/Masters_Portfolio/blob/main/CourtneyZimmer_PortfolioSubmission.pdf)
+
+8. [Portfolio Presentation Deck](https://github.com/czimmerb/Masters_Portfolio/blob/main/CourtneyZimmer_PortfolioSubmission.pdf)
